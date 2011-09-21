@@ -14,7 +14,7 @@ dnl You may want to get yourself a copy of OpenBSD gcc-local manual page.
 dnl It is available at http://www.openbsd.org.
 dnl
 dnl @version 1.0
-dnl @author Hannu Lyytinen <hlyytine@cs.uku.fi>
+dnl @author Hannu Lyytinen <hlyytine@kapsi.fi>
 dnl
 AC_DEFUN([AC_C_BOUNDED], [
   AC_CACHE_CHECK([whether C compiler supports attribute bounded],

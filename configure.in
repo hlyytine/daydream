@@ -1,5 +1,5 @@
 AC_PREREQ(2.57)
-AC_INIT(daydream, 2.14.9, hlyytine@cs.uku.fi)
+AC_INIT(daydream, 2.14.9, hlyytine@kapsi.fi)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([main/daydream.c])
 AC_CONFIG_HEADER([config.h])
