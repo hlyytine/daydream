@@ -1,0 +1,21 @@
+This directory contains some perl/python/sh/whatever scripts.
+
+Feel free to contibute if you have written something useful.
+
+Following scripts are available:
+
+longtoshort.pl - converts lists with long filenames to short format
+
+desc.pl        - converts descript.ion to long daydream filelist.
+                 stdin: descript.ion, stdout: dd filelist. Run in the
+		 directory where the files are.
+		 (This isn't 100% but it works for most of the case :)
+		 
+clean.pl       - cleans up the file list, i.e. strips the unnecessary
+                 descriptions from packages containing multiple packets,
+		 leaving the description in the last packet only. Overall
+		 layout is unchanged.
+		 
+cfg2dbinds     - a shell script that extracts the doors from daydream.cfg
+                 and writes the menu command bindings for them to standard
+		 output.		 

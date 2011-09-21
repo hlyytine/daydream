@@ -1,0 +1,104 @@
+This is a simple guide on how to get DOS door games running using 
+DayDream 2.11.
+
+This has only been tested on Slackware Linux 7.0, your mileage may vary.
+
+  1) Apply daydream-2.11-dosdoor.patch [Might not be necessary with newer
+     versions]
+
+darkstar:/bbs$ patch -p0 < daydream-2.11-dosdoor.patch
+
+  2) Get dosemu 1.0.1 and the vmodem patch
+
+dosemu 1.0.1: ftp://ftp.dosemu.org/dosemu/dosemu-1.0.1.tgz
+vmodem patch: ftp://ftp.dosemu.org/dosemu/fixes/patch-1.0.1-missing-vmodem.gz
+
+  3) Extract dosemu, patch in vmodem
+
+  6) Install dosemu, with a bootdir
+
+  7) Set up your doors via dosemu, then in /etc/dosemu.conf set com1 to
+     "virtual".
+     NOTE: Your doors should expect either a dorinfo%n.def or door.sys
+     file in the directory they are installed in.
+
+  8) Modify this file as suited for each door and place in the directory
+     where the dropfile will go.
+
+     This one is for BRE and is called "start-bre"
+
+-----------
+#!/bin/bash
+
+DOORDIR='C:\\bre\\'
+AUTOEXEC='autoexec.one'
+BOOTDIR='/bbs/c-drive'
+STARTBAT='start.bat'
+
+trap '' 2 3
+
+/bin/cp -f $BOOTDIR/$AUTOEXEC $BOOTDIR/autoexec.N$1
+
+echo -e 'cd ' $DOORDIR ' \r' >> $BOOTDIR/autoexec.N$1
+echo -e 'call ' $STARTBAT ' '$1' \r' >> $BOOTDIR/autoexec.N$1
+echo -e 'exitemu \r' >> $BOOTDIR/autoexec.N$1
+reset > /dev/null
+nice -n 10 /usr/bin/dos -C -D-a -I "video { none } emubat N$1"
+rm $BOOTDIR/autoexec.N$1
+-----------
+
+     Here is the contents of "start.bat" in "C:\bre" [Lines terminated
+     CRLF!!!]
+
+-----------
+srdoor.exe
+bre.exe
+-----------
+
+     This start file can handle multiple nodes. If your door requires
+     the node number on the command line, use %1 in the start.bat file
+     where it is necessary.
+
+  9) Next, add your door to daydream.cfg
+     Use a doortype of 7 if the door expects a dorinfo%n.def file,
+     or 8 if the door expects door.sys
+
+     Here is an example for BRE with a door.sys dropfile
+
+-----------
+DOOR_COMMAND.. BRE
+DOOR_TYPE..... 8
+DOOR_SECURITY. 5
+DOOR_EXECUTE.. /bbs/c-drive/bre/start-bre
+DOOR_CONFS1... XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+DOOR_CONFS2... XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+-----------
+
+      DayDream will automatically supply start-bre with the node, so you
+      don't have to.
+      DayDream will drop the door.sys file as /bbs/c-drive/bre/door.sys
+      then execute /bbs/c-drive/bre/start-bre [nodenumber]
+
+   10) Done!
+
+NOTE:
+Always always _ALWAYS_ chown all the datafiles to the user the BBS runs at
+or you'll get some unexpected errors.
+
+DayDream will warn if it can't drop the dropfile, and most doors won't work
+if they can't access the datafiles, so if your door isn't working -- check
+the permissions on them first.
+
+
+NOTE:
+This patch adds two things to your config -- SYSOPFIRST and SYSOPLAST.
+SYSOPFIRST is the sysops first name, and SYSOPLAST is the sysops last name.
+ddcfg will complain if you do not have them in your config file.
+
+If you have any problems with this, give me an email at phillip@cce.co.nz
+
+Phillip O'Donnell
+phillip@cce.co.nz
+
+P.S: Greets to Kristofer Clayton for re-introducing me to BBS systems, along
+     with everyone else on #bbs in BBSnet [irc.lordlegacy.org]

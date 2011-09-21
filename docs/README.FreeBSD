@@ -1,0 +1,18 @@
+README for running DayDream on FreeBSD
+======================================
+
+  Tested only on the i386 platform.
+
+  Automake uses some GNU make specific constructs, so you have 
+  to install 'gmake' first and substitute 'gmake' for 'make' in
+  the general installation instructions.
+
+  Furthermore, you must change some lines in daydream.cfg. 
+    
+LOCALNODEPAT. /dev/tty* 
+
+  must be changed to
+
+LOCALNODEPAT. /dev/ttyv* 
+ 
+  On FreeBSD, the appropriate serial ports are called /dev/cuaaX.

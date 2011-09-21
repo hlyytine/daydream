@@ -1,0 +1,20 @@
+#!/bin/sh
+## This is the login shell for DayDream BBS software @VERSION@
+## You should add this file to your system's shell database (/etc/shells).
+
+# User cannot break out of this script
+trap "" 2 3
+
+## !! Set this variable to point to your BBS installation dir (e.g /home/bbs)
+DAYDREAM=@prefix@
+export DAYDREAM
+
+## DO NOT CHANGE ANYTHING BELOW THIS LINE
+
+## Set some environment variables
+PATH=$DAYDREAM:$DAYDREAM/bin:$DAYDREAM/sbin
+export PATH
+LD_LIBRARY_PATH=$DAYDREAM/lib
+export LD_LIBRARY_PATH
+## Finally, exec the daydream binary
+exec $DAYDREAM/daydream

@@ -1,0 +1,33 @@
+The most important issues:
+--------------------------
+
+- ddftpd deletes upload if the filename is longer than 31 characters.
+
+- better FidoNet support
+
+- enhancements to ddftpd (virtual file system, easier downloading)
+
+- better configuration utility
+
+- better documentation 
+
+- get rid of yacc/bison requirement during build
+
+Bug fixes:
+----------
+
+- fix telnetd: try traditional Berkeley-style in getpty() in Unix98 fails
+
+
+Wishlist:
+---------
+
+- clean up conferencing system. Implement name-dependant conference
+  access and get rid of 64 conferences limit.
+
+- multinode chat + smodem multinode chat
+
+- try to speed up ddz (currently based on very old lrzsz-0.12b)
+
+- a scrolling filelist
+

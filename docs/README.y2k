@@ -1,0 +1,47 @@
+
+ DayDream & year 2000
+ ====================
+ 
+
+It appears that the version 2.09 is not fully Y2K-compliant. The 
+problems discovered are listed below:
+
+ - conftop had a cosmetic bug. 
+ 
+ - grab produced QWK packets with broken date.
+
+ - the "new" door and file search by date were broken.
+
+ - moving the files with the "move" SysOp command and 
+   uploads had cosmetic bugs but they broke the "new"
+   door etc.   
+
+ - conv18to34, basically this is an automated "move"
+   command and it had the same problems as well.
+
+ - ddtop, at least cosmetic bugs.
+
+ - maybe tosser. I'm not really sure of this one, but
+   I recoded the critical part in a way that it works
+   whether it had the problem or not.
+
+These bugs are fixed now, hopefully properly. However, some of these
+bugs have left their footprints into your filelists. In order to clean
+them, you could either fix them manually or use the "fix.sh" script,
+that gets installed into "$DAYDREAM/sbin/".
+
+You may want to backup the filelists before trying this script. In case
+you are using bash(1), try this:
+
+% tar czf filelists.tar.gz `find /home/bbs -name 'directory.*'`
+
+Having done that, run the script:
+
+% sbin/fix.sh /home/bbs/daydream.cfg
+
+Replace the pathname of the configuration file if it resides elsewhere.
+If the problems persists or you discover new ones, please report them
+at the usual address.
+
+WWW:    http://daydream.iwn.fi/
+e-mail: daydream@daydream.iwn.fi

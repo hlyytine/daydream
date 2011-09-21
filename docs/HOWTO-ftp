@@ -1,0 +1,137 @@
+DayDream FTP server HOWTO
+=========================
+
+Contents:
+
+ * Instructions for inetd-based systems (using the default port 21)
+ * Instructions for inetd-based systems (using another port)
+ * Instructions for xinetd-based systems (using the default port 21)
+ * Instructions for xinetd-based systems (using another port)
+ * Using DayDream FTP server behind a NAT
+
+
+
+Instructions for inetd-based systems (using the default port 21)
+----------------------------------------------------------------
+
+ 1) Compile and install DayDream.
+
+ 2) Insert the following line into your "inetd.conf":
+
+ftp stream tcp nowait root /home/bbs/sbin/ddftpd ddftpd -D/home/bbs -p/home/bbs/bin/daydream
+
+ 3) Use "kill" command to signal inetd to reread its configuration file:
+    
+kill -HUP <inetd's PID>
+   
+
+
+Instructions for inetd-based systems (using another port)
+---------------------------------------------------------
+
+ 1) Compile and install DayDream.
+
+ 2) Add the following line to "/etc/services":
+
+ddftp 7001/tcp
+
+    You can use any port number you wish, just make sure it is
+    not already used.
+
+ 3) Insert the following line to your "inetd.conf":
+
+ddftp stream tcp nowait root /home/bbs/sbin/ddftpd ddftpd -D/home/bbs -p/home/bbs/bin/daydream
+  
+ 4) Use "kill" command to signal inetd to reread its configuration file:
+    
+kill -HUP <inetd's PID>
+
+
+
+Instructions for xinetd-based systems (using the default port 21)
+-----------------------------------------------------------------
+
+ 1) Compile and install DayDream.
+
+ 2) Create a file "/etc/xinetd.d/ddftpd" or wherever the configuration
+    files of xinetd are stored on your system:
+
+service ftp
+{
+	socket_type		= stream
+	wait			= no
+	user			= root
+	server			= /home/bbs/sbin/ddftpd
+	server_args		= -D/home/bbs -p/home/bbs/bin/daydream
+	log_on_success		+= DURATION
+	nice			= 10
+	disable			= no
+}
+
+ 3) Do "/etc/init.d/xinetd restart".
+
+
+
+Instructions for xinetd-based systems (using another port)
+----------------------------------------------------------
+
+ 1) Compile and install DayDream.
+
+ 2) Add the following line to "/etc/services":
+
+ddftp 7001/tcp
+
+    You can use any port number you wish, just make sure it is
+    not already used.
+
+ 3) Create a file "/etc/xinetd.d/ddftpd" or wherever the configuration
+    files of xinetd are stored on your system:
+
+service ddftp
+{
+	socket_type		= stream
+	wait			= no
+	user			= root
+	server			= /home/bbs/sbin/ddftpd
+	server_args		= -D/home/bbs -p/home/bbs/bin/daydream
+	log_on_success		+= DURATION
+	nice			= 10
+	disable			= no
+}
+
+ 4) Do "/etc/init.d/xinetd restart".
+
+
+
+Using DayDream FTP server behind a NAT
+--------------------------------------
+
+ The FTP server has an optional switch -P to force another IP into
+ a PASV reply. Just use the IP of the machine performing NAT. For
+ example, let's assume "inetd.conf" has the following line:
+
+ftp stream tcp nowait root /home/bbs/sbin/ddftpd ddftpd -D/home/bbs -p/home/bbs/bin/daydream -P136.0.83.1
+
+ Let's see how the server responds to a request for passive mode: 
+
+$ telnet 127.0.0.1 21
+Trying 127.0.0.1...
+Connected to 127.0.0.1.
+Escape character is '^]'.
+220 foo.quux.net DD-FTP server (Version 5.60) ready.
+USER quuxquux
+331 Password required for quuxquux.
+PASS barbar
+230- Help
+Upload files to ul/ dir. After uploading log on to the BBS and hit U
+in the destination conference.
+
+Files to DL are in dl/ dir. Please remove them after you've leeched them.
+
+230 User quuxquux logged in.
+PASV
+227 Entering Passive Mode (136,0,83,1,156,64)
+QUIT
+221 Goodbye.
+Connection closed by foreign host.
+

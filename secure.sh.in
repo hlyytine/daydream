@@ -1,0 +1,137 @@
+#! /bin/sh
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+bindir=@bindir@
+sbindir=@sbindir@
+libexecdir=@libexecdir@
+datadir=@datadir@
+sysconfdir=@sysconfdir@
+sharedstatedir=@sharedstatedir@
+localstatedir=@localstatedir@
+libdir=@libdir@
+infodir=@infodir@
+mandir=@mandir@
+includedir=@includedir@
+
+owner=bbsadmin:bbs
+adminmode=u+rwX,go-rwx
+secmode=u+rwX,g=u-w,o-rwx
+wrmode=ug=rwX,o-rwx
+
+logfile=${prefix}/daydream-secure.log
+rm ${logfile} 2>/dev/null
+
+writable_files="${datadir}/data/userbase.dat"
+writable_files="${writable_files} ${datadir}/questionnaire/answers"
+writable_files="${writable_files} ${datadir}/data/ddwall.dat"
+writable_files="${writable_files} ${datadir}/data/dd-conftopdates.dat"
+writable_files="${writable_files} ${datadir}/data/dd-conftopall.dat"
+writable_files="${writable_files} ${datadir}/data/dd-conftopthisweek.dat"
+writable_files="${writable_files} ${datadir}/data/dd-conftoplastweek.dat"
+writable_files="${writable_files} ${datadir}/display/iso/ddcallers.gfx"
+writable_files="${writable_files} ${datadir}/display/iso/ddcallers.txt"
+
+secure_dirs="${prefix}/docs ${prefix}/doors ${prefix}/scripts"
+secure_dirs=" ${secure_dirs} ${prefix}/utils"
+secure_dirs=" ${secure_dirs} ${datadir}/aclocal ${datadir}/batch"
+secure_dirs=" ${secure_dirs} ${datadir}/bulletins ${datadir}/configs"
+secure_dirs=" ${secure_dirs} ${datadir}/display ${datadir}/display"
+secure_dirs=" ${secure_dirs}"
+
+writable_dirs="${prefix}/aliens ${prefix}/temp"
+writable_dirs=" ${writable_dirs} ${prefix}/users ${prefix}/logfiles"
+
+secure_files="${datadir}/data/conversiontable01.dat"
+secure_files=" ${secure_files} ${datadir}/data/conversiontable02.dat"
+secure_files=" ${secure_files} ${datadir}/data/daydream.dat"
+secure_files=" ${secure_files} ${datadir}/data/selected.dat"
+secure_files=" ${secure_files} ${datadir}/data/conferences.dat"
+secure_files=" ${secure_files} ${datadir}/data/externalcommands.dat"
+secure_files=" ${secure_files} ${datadir}/data/display.dat"
+secure_files=" ${secure_files} ${datadir}/data/archivers.dat"
+secure_files=" ${secure_files} ${datadir}/data/multinode.dat"
+secure_files=" ${secure_files} ${datadir}/data/security.dat"
+secure_files=" ${secure_files} ${datadir}/data/access.dat"
+secure_files=" ${secure_files} ${datadir}/data/protocols.dat"
+secure_files=" ${secure_files} ${prefix}/ddlogin"
+secure_files=" ${secure_files} ${prefix}/daydream-secure.log"
+
+chown ${owner} ${prefix}/daydream.cfg 2>>${logfile}
+chmod ${adminmode} ${prefix}/daydream.cfg 2>>${logfile} 
+ 
+for dir in ${secure_dirs}; do
+  chown -R ${owner} ${dir} 2>>${logfile}
+  chmod -R ${secmode} ${dir} 2>>${logfile} 
+done
+
+for dir in ${writable_dirs}; do
+  chown ${owner} ${dir} 2>>${logfile}
+  chmod ${wrmode} ${dir} 2>>${logfile} 
+done
+
+for file in ${secure_files}; do
+  chown ${owner} ${file} 2>>${logfile}
+  chmod ${secmode} ${file} 2>>${logfile} 
+done
+
+for file in ${writable_files}; do
+  test -f ${file} || touch ${file} 2>>${logfile}
+  chown ${owner} ${file} 2>>${logfile}
+  chmod ${wrmode} ${file} 2>>${logfile} 
+done
+
+# Cannot use the -R flag on these directories.
+chown ${owner} ${datadir}/questionnaire 2>>${logfile}
+chmod ${secmode} ${datadir}/questionnaire 2>>${logfile} 
+
+# Cannot yet drop group write permission, faker needs it
+# chown ${owner} ${datadir}/data 2>>${logfile}
+# chmod ${secmode} ${datadir}/data 2>>${logfile} 
+chown ${owner} ${datadir}/data 2>>${logfile}
+chmod ${wrmode} ${datadir}/data 2>>${logfile} 
+
+
+if [ x${prefix} = x/home/bbs ]; then
+  for dir in ${libdir} ${mandir} ${sbindir} ${includedir} ${bindir}; do
+    chown -R ${owner} ${dir} 2>>${logfile} 
+    chmod -R ${secmode} ${dir} 2>>${logfile} 
+  done
+
+  chown ${owner} ${datadir} 2>>${logfile}
+  chmod ${secmode} ${datadir} 2>>${logfile}
+
+  chown ${owner} ${prefix} 2>>${logfile} 
+  chmod ${secmode} ${prefix} 2>>${logfile} 
+else 
+  cat 1>>${logfile} <<EOF
+
+WARNING: ${prefix} is not /home/bbs, don't know whether the installation
+directories are system directories (for example, /usr/bin). Therefore,
+you should check and execute the following commands:
+
+chown -R ${owner} ${libdir}
+chmod -R ${secmode} ${libdir}
+chown -R ${owner} ${mandir}
+chmod -R ${secmode} ${mandir}
+chown -R ${owner} ${sbindir}
+chmod -R ${secmode} ${sbindir}
+chown -R ${owner} ${includedir}
+chmod -R ${secmode} ${includedir}
+chown -R ${owner} ${bindir}
+chmod -R ${secmode} ${bindir}
+chown ${owner} ${datadir}
+chmod ${secmode} ${datadir}
+chown ${owner} ${prefix}
+chmod ${secmode} ${prefix}
+
+EOF
+fi
+
+echo Securing of DayDream installation complete. The log file is as follows:
+echo
+cat ${logfile}
+echo
+echo You may find this logfile in \"${logfile}\".
+echo
+

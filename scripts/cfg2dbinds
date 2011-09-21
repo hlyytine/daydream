@@ -1,0 +1,27 @@
+#!/bin/sh
+
+usage()
+{
+    cat <<EOF
+This shell script creates command bindings for doors found in your
+"daydream.cfg" file. Redirect the standard output to
+"$DAYDREAM/menu/doors.menu".
+    
+Usage: cfg2dbinds daydream.cfg
+EOF
+    exit 1
+}
+
+if test $# -eq 0; then
+  usage
+fi
+
+if test ! -r $1; then
+  echo "error: $1 is not readable."
+  exit 1
+fi
+
+sed -e '/^DOOR_COMMAND.*[[:space:]]\(.*\)$/ !D' \
+    -e 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/' \
+    -e "s/^door_command.*[[:space:]]\\(.*\\)$/~#MBbind_cmd(\"\\1\"); subst(\"door\", \"%'\\1 %S\")|~#LF/" \
+    $1

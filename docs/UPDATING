@@ -1,0 +1,294 @@
+Updating from 2.14.8 to 2.14.9
+------------------------------
+
+Updating from 2.14.7 to 2.14.8
+------------------------------
+
+ - 'docs/HOWTO-ddcallers' contains very important (security related)
+   information. Make sure you perform the steps described therein.
+
+ - Remove 'newfailsavestr' from your 'strings.xxx' files.
+
+ - If you are providing FTP services, you have to edit your inetd 
+   setup. The argument of the -p switch is now an absolute pathname
+   to the DayDream executable (it was earlier the pathname of the
+   directory where the executable was).
+
+ - Note that the format of the ~#RA display code has changed 
+   a little. Read "docs/html/setup.html".
+
+ - Add -v switch to every invocation of runas that is used to
+   run the archiver for viewing the archive contents. (When
+   using -v flag, runas does not try to chmod it's working
+   directory.)
+
+ - Make sure the ARC_FAILx strings really contain the snippets
+   of error messages that the archiver can output on error. Seems
+   like the current versions of unzip will not output 'Error:' (at
+   least not when it was tried quickly). So, update those strings.
+   Remember that they are case-sensitive and have a maximum length
+   on 15 characters.
+
+Updating from 2.14.6 to 2.14.7
+------------------------------
+
+ - Add the following line to 'daydream.cfg':
+
+DOORLIBPATH.. /home/bbs/lib
+
+   If you have another runtime library paths for doors (use 'ldd'
+   to find out all the required libraries), insert their paths here
+   as well with a colon (:) as separator.
+
+Updating from 2.14.5 to 2.14.6
+------------------------------
+
+Updating from 2.14.4 to 2.14.5
+------------------------------
+
+ - If you are having problems with NAT and ddftpd, please
+   read "docs/HOWTO-ftp".
+
+Updating from 2.14.3 to 2.14.4
+------------------------------
+
+Updating from 2.14.2 to 2.14.3
+------------------------------
+
+ - Read "INSTALL", "docs/SECURITY" and "docs/README.archivers".
+
+Updating from 2.14.1 to 2.14.2
+------------------------------
+
+Updating from 2.14 to 2.14.1
+----------------------------
+
+Updating from 2.13 to 2.14
+--------------------------
+ - Remove SHELL_PW from your 'daydream.cfg', it's obsolete.
+
+ - Add the password line to every door in your 'daydream.cfg',
+   for example:
+
+DOOR_COMMAND.. SHELL
+DOOR_TYPE..... 2
+DOOR_SECURITY. 255
+DOOR_EXECUTE.. /bin/sh
+DOOR_CONFS1... XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+DOOR_CONFS2... XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+DOOR_PASSWD... SODOM
+
+   Use '-' as a password if you want to disable the password.  
+
+ - Add the following to 'daydream.cfg':
+
+ASKDISPLAY... Y
+LOGINSTYLE... Y
+
+   Read 'docs/html/config.html' for more information about these settings.
+
+ - If you had the /proc mounted on OpenBSD in order to get
+   the "who" command and door programs work properly, it is
+   not necessary anymore. You can safely unmount your /proc.
+   Do not unmount it on FreeBSD, though, as it is mounted by
+   default, so I expect it is used by the system anyway.
+
+ - Replace the following lines
+
+stats6str:[32mUploads      [33m: [0m%11.11Lu [32mBytes <[33m*[32m> [0m%10.10lu [32mFiles[0m ([32mFile Ratio [36mUL[0m:[36m%s[0m)\n
+stats7str:[32mDownloads    [33m: [0m%11.11Lu [32mBytes <[33m*[32m> [0m%10.10u [32mFiles[0m ([32mByte Ratio [36mUL[0m:[36m%s[0m)\n\n
+s
+freespacestr:\n[36mFree uploading space: %Lu bytes (%Lu bytes at once!)\n\n
+
+   with the lines below:
+
+stats6str:[32mUploads      [33m: [0m%11.11qu [32mBytes <[33m*[32m> [0m%10.10hu [32mFiles[0m ([32mFile Ratio [36mUL[0m:[36m%s[0m)\n
+stats7str:[32mDownloads    [33m: [0m%11.11qu [32mBytes <[33m*[32m> [0m%10.10hu [32mFiles[0m ([32mByte Ratio [36mUL[0m:[36m%s[0m)\n\n
+s
+freespacestr:\n[36mFree uploading space: %qu bytes (%qu bytes at once!)\n\n
+
+   If you have modified versions of these strings, replace "%11.11Lu" with
+   "%11.11qu" and "%Lu" with "%qu". No other strings should contain these
+   formatting codes.
+
+Updating from 2.12 to 2.13
+--------------------------
+
+Updating from 2.11 to 2.12
+--------------------------
+
+Updating from 2.10 to 2.11
+--------------------------
+
+Updating from 2.09 to 2.10
+--------------------------
+ - Read the Y2K instructions from docs/README.y2k.
+ 
+ - Insert the "log"-door into your daydream.cfg. With this command
+   you can view the logs of any node. As this is for SysOp only, you
+   may want to use the highest security, 255.
+
+Updating from 2.08 to 2.09
+--------------------------
+ - Get rid of those menu definitions in your text files, if you 
+   do not like them. They are not needed any longer.
+   
+ - If you want to use Unix98 PTYs, insert /dev/pts/* to your
+   TELNETNODEPAT in "daydream.cfg".
+
+Updating from 2.07 to 2.08
+--------------------------
+
+Updating from 2.06 to 2.07
+--------------------------
+
+ - Add the following lines to your strings-files.
+
+mainmenustrnmb:[0m[[32m~N[0m] [35m~C [0m[[36mno messagebases[0m] [[33m~T[0m]:
+msgreadnmb:\e[35mNo messagebases in this conference.\e[0m\n\n
+
+Updating from 2.05 to 2.06
+--------------------------
+
+ - Convert all the display string files with utils/strconv (you need
+   Perl), something like this will do:
+
+strconv /usr/src/daydream /home/bbs/display/strings.001
+
+   Otherwise DD will be unable to use that displaymode (due to new, more
+   flexible file format).
+
+ - Add the following strings to display/strings.xxx:
+ 
+mmunknowncmd:\e[31mUnknown cmd!\e[0m\n\n
+mmfloodkillstr:\e[34mExcessive carriage return.\e[0m\n\n
+
+ - Add
+ 
+FLOODKILLTRIG 10
+
+   to daydream.cfg, 0 to keep the old convention.
+
+Updating from 2.04 to 2.05
+--------------------------
+
+ - Add
+PYTHON....... /usr/local/bin/python 
+to daydream.cfg. (DAYDREAM.DAT)
+
+If you wish to have direct ftp-upload enabled, add following to daydream.cfg
+multinode-stuff. Also daydream-executable *MUST* be in path:
+
+MNODE_NODE.... F
+MNODE_MBAUD... 1200
+MNODE_MNBAUD.. 1200
+MNODE_OWNDIR.. N
+MNODE_NOTIFY.. Y
+MNODE_HIDEINAC Y
+MNODE_HIDEWAIT Y
+MNODE_HIDECALL Y
+MNODE_NOPASSWD N
+MNODE_TEMP.... /home/bbs/temp/ftp%d/
+MNODE_TTYNAME. -
+MNODE_TTYTYPE. 3
+MNODE_TTYSPEED 57600
+
+ - Add 
+--------------------------------------
+\e[32mVerify      : \e[33m
+[35mPassword mismatch\n
+[32mVerify : [33m
+[35mPassword mismatch\n
+--------------------------------------
+   to display/strings.xxx.
+
+
+Updating from 2.03 to 2.04
+--------------------------
+
+ - Add
+ 
+DEF_BGCHECKER Y
+CATALOGDUPECK Y
+BGCHECKER.... Y
+ALLOW2FTPUSER Y
+to daydream.cfg. (DAYDREAM.DAT-section).
+   
+ - Add 
+ 
+11) Max number of lines in filedescriptions...: ~#ML 
+ 
+  to your edituser.txt/gfx.
+  
+  
+ - Add
+ 
+------------- cut
+Max number of lines in file descriptions (0 = Unlimited): 
+\nUser is refusing messages\n
+[~N] ~C [~L:~M] [~A/~E] [~T]: 
+\nFound file(s) in incoming ftp-directory.\n\nUse U-command to put them online!\n
+\nFound file(s) in incoming ftp-directory.\n\nDo you want to put them online now? (Y/n):
+Background checker
+Please wait while background checker is being finished...
+\n[0mYou are not authorized to post echomail.\n
+\n[0mYou are not authorized to post netmail.\n
+Destination address (zone:net/node.point): 
+*
+\nThere are files flagged.\n\nDisconnect? (Y)es, keep them flagged/n)o/c)lear list and logoff): 
+Clear and go!
+Some previously flagged files found. Checking...
+ Done. %d files flagged.\n
+\nFree uploading space: %Lu bytes (%Lu bytes at once!)\n\n
+Your fileratio doesn't allow downloading. Upload! <PAUSE>
+Your byteratio doesn't allow downloading. Upload! <PAUSE>
+File doesn't exist on hard disk. <PAUSE>
+\nMaximum attempts reached.\n\n
+Delete original message? (Yes/no): 
+\nUpload statistics\n=================\nType              Files         Bytes       Dupes      OK Files    OK Bytes\n---------------------------------------------------------------------------\n
+-12.12s %10d %13d %11d %13d %11d\n
+---------------------------------------------------------------------------\nTOTAL %17d %13d %11d %13d %11d\n
+Normal
+Background
+------------- cut
+
+ to strings.001
+ 
+ - Burn your phone company and nuke EUnet.
+ 
+ - Add
+
+CONF_GLOBALDCK Y
+  to daydream.cfg (conferences-section, EVERY conf. Have a look at example 
+                   daydream.cfg)
+
+ - UPDATE your ddsz/ddrz.
+ 
+ - Change "MNODE_TABLE fields to MNODE_INTABLE and MNODE_OUTTABLE) (That's
+   right, there are two "MNODE_TABLE's" per block)
+   
+
+
+
+
+
+
+Updating from 2.02 to 2.03
+--------------------------
+ - There are two new lines in strings.XXX. Add them. (See example for the
+   lines, huh)
+   
+ - Add
+
+ALLOW2LOGINS. N
+ASKNEWUSER... Y
+DEF_EXPERT... N
+DEF_MAILSCAN. Y
+DEF_NEWFILESC N
+DEF_ALLOWNODE Y
+DEF_EDITOR... F
+DEF_AUTOQUICK N
+
+   to daydream.cfg. (DAYDREAM.DAT-section).
+
+

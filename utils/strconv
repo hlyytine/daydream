@@ -1,0 +1,30 @@
+#!/usr/bin/perl
+# converts DayDream's strings-file into the new format
+
+if ($#ARGV!=1) {
+    print "usage: strconv.pl sourcedirectory stringsfile\n";
+    exit 1;
+}
+
+@arg=("cp", "-f", "$ARGV[1]", "$ARGV[1]~");
+system(@arg)==0 or die "$0 : can't create backup file.\n";
+
+open (defs, "<$ARGV[0]/main/strf.h") || die "$0 : can't open \"strf.h\".\n";
+open (strs, "<$ARGV[1]~") || die "$0 : can't open \"$ARGV[1]~\".\n";
+open (output, ">$ARGV[1]") || die "$0 : can't create \"$ARGV[1]\".\n";
+
+$_=<defs> until (s/#define *//);
+
+MAIN: while ($line=<strs>) {
+    chomp $line;
+    last MAIN if /^$/;
+    s/(\w+)//;
+    printf output "%s:%s\n", $1, $line;
+} continue {
+    $_=<defs>;
+    s/#define *//;
+}
+
+close defs;
+close strs;
+close output;

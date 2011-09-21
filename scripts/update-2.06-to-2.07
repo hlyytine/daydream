@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if test -z ${DAYDREAM}; then
+  echo '$DAYDREAM is not set, probably you do not have 2.06?'
+  exit 1
+fi
+
+rm -f $DAYDREAM/doors
+rm -f $DAYDREAM/utils
+rmdir $DAYDREAM/doors
+rmdir $DAYDREAM/utils
+ln -sf $DAYDREAM/bin $DAYDREAM/doors
+ln -sf $DAYDREAM/bin $DAYDREAM/utils
+ln -sf $DAYDREAM/bin/daydream $DAYDREAM/daydream

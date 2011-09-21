@@ -1,0 +1,53 @@
+README for running DayDream on Solaris
+======================================
+
+  Tested only on the SPARC platform.
+
+
+1. printf() formatting code issue
+---------------------------------
+
+  The default "strings.001" contains BSDish printf() format codes
+  which are not supported in Solaris. On the other hand, the
+  corresponding Solaris formatting codes are not supported in
+  older BSD systems. 
+
+  This will be fixed in the future. Meanwhile, you should replace
+  three strings in "strings.001" or you will experience segmentation
+  fault. The particular formatting code is "%qu", which is dubbed
+  "%llu" in Solaris. So, change these lines:
+
+freespacestr:\n[36mFree uploading space: %qu bytes (%qu bytes at once!)\n\n
+stats6str:[32mUploads      [33m: [0m%11.11qu [32mBytes <[33m*[32m> [0m%10.10hu [32mFiles[0m ([32mFile Ratio [36mUL[0m:[36m%s[0m)\n
+stats7str:[32mDownloads    [33m: [0m%11.11qu [32mBytes <[33m*[32m> [0m%10.10hu [32mFiles[0m ([32mByte Ratio [36mUL[0m:[36m%s[0m)\n\n
+
+  After replacing "%qu" with "%llu" the lines should be as follows: 
+
+freespacestr:\n[36mFree uploading space: %qu bytes (%qu bytes at once!)\n\n
+stats6str:[32mUploads      [33m: [0m%11.11qu [32mBytes <[33m*[32m> [0m%10.10hu [32mFiles[0m ([32mFile Ratio [36mUL[0m:[36m%s[0m)\n
+stats7str:[32mDownloads    [33m: [0m%11.11qu [32mBytes <[33m*[32m> [0m%10.10hu [32mFiles[0m ([32mByte Ratio [36mUL[0m:[36m%s[0m)\n\n
+
+
+2. runtime linker path issues
+-----------------------------
+
+  You might notice that some doors fail to start, outputting only
+  an error message like this:
+
+ld.so.1: bin/faker: fatal: libgcc_s.so.1: open failed: No such file or directory
+
+  This message means that the door program was linked against some
+  library which is not in the runtime linker default search path.
+  First, you need to find this library. After you know its location,
+  you can either add the directory to the environment variable 
+  LD_LIBRARY_PATH set in "/home/bbs/ddlogin" or you can modify the
+  system-wide search path by issuing the following command as root:
+
+crle -l /usr/lib -i /usr/lib -l /usr/local/lib -i /usr/local/lib
+
+  where /usr/local/lib was the location of libgcc_s.so.1. Always 
+  include /usr/lib in the search path or your system will not work.
+  If you mess up the search path, you can just reset as follows:
+
+crle -l /usr/lib -i /usr/lib
+

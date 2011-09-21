@@ -1,0 +1,723 @@
+2.14.6
+~~~~~~
+
+ - Sometimes file_id.diz files were not extracted correctly. 
+
+ - Previously files not passing background checker were deleted
+   on FTP sessions. Now they remain to be uploaded whenever the
+   user logs in via telnet. 
+
+ - Fixed another year 2000 bug in ddftpd.
+
+ - Now running on Solaris.
+
+2.14.5
+~~~~~~
+
+ - Wrote workaround for using the FTP server behind a NAT.
+
+ - Fixed a few file descriptor leaks, race conditions and
+   compiling problems.
+
+ - ZModem throughput massively increased.
+
+2.14.4
+~~~~~~
+ - ddwho and ddftpwho working for non-bbs UNIX users.
+
+ - Fixed a symlink vulnerability in the upload checker.
+
+ - ddtelnetd and ddftpd are now statically linked to auxiliary 
+   libraries. This improves security and makes it unnecessary to
+   relink the binaries when moving them around the file system.
+
+ - Operating system banner removed from ddtelnetd.
+
+ - Amiga telnet clients can connect at last.
+
+ - Aesthetics improved by fixing the length computation of strings
+   containing ANSI control codes.
+ 
+ - A few potential segmentation faults fixed.
+
+ - Broken "disable idle timeout" feature fixed, patch provided
+   by PinkFreud.
+ 
+ - FTP daemon refused to work at all, complaining "all nodes full".
+
+ - Sometimes DayDream terminated with error message "cannot open
+   console".
+
+ - Tosser did not mark processed messages as tossed.
+
+2.14.3
+~~~~~~
+ - A login script for DayDream is generated automatically
+   during installation. 
+
+ - Implemented archive checking more securely and improved
+   overall secureness as well.
+
+ - Text search worked only in the current message base.
+
+ - Some messages could be "lost" due to typo in the message
+   reading code.
+
+ - Door testing command "$" is now restricted to SysOp only.
+
+ - The password prompt for a door was displayed even if
+   the door had not a password.
+
+2.14.2
+~~~~~~
+ - The feature of preventing multiple logins was broken.
+
+ - Text file control codes ~#MC, ~#TF and ~#RA were vulnerable
+   to a buffer overflow attack.
+ 
+ - Fixed a typo that slipped into tosser's sources.
+
+2.14.1
+~~~~~~
+ - Eliminated the need of mounted /proc in ddftpwho, ddftpd, 
+   server and yelld.
+
+ - Removed deprecated entries CHATCMD, CHATMODE, DISABLEWILDS,
+   QUESTIONS, QUICKLINEED, ARC_TYPE and ARC_OFFLINE from
+   'daydream.cfg', since they were historical and did not
+   affect anything.
+
+ - Fixed tosser's broken outbound mail handler.
+
+2.14
+~~~~
+ - The '\s' token can be used in strings.xxx to omit the rest
+   of the line, even newline characters.
+
+ - Login procedure can be configured to query the password
+   even if the user account does not exist.
+
+ - Disabling new account creation is now possible.
+
+ - Added password support for door invocation. This can be
+   used to restrict the shell access, for example. 
+
+ - Missing text files are syslogged on local2.debug.
+
+ - Query about the number of incoming/outgoing conversion table
+   can be now configured out of login.
+
+ - Fixed the bugging catalog-based dupechecker. It searched 
+   only the first conference for duplicate files.
+
+ - Apparently ddftpd uploaded to user's last joined conference
+   if the 'SITE UPLOAD' command was not given. Fixed.
+
+ - Fixed python-specific compilation errors.
+
+ - Job control works now in spawned processes that
+   communicate with DayDream by means of standard I/O.
+
+ - Added a possibility to specify the installation path
+   of DayDream for the FTP daemon. Read "docs/HOWTO-ftp".
+
+ - Fixed a printf() format bug in the stats screen that
+   resulted in segmentation fault every time on FreeBSD.
+   Read "docs/UPDATING". 
+
+ - Fixed problems in PTY allocation.
+
+ - Background checker did not work at all. There was also
+   a bug which caused userbase corruption on OpenBSD. Fixed.
+
+ - Idle timeout on local nodes works again. 
+
+ - Fixed ddsnoop, which did not work on BSD systems.
+
+ - Plugged up two file descriptor leaks.
+
+ - Fixed the permission problem in ddcfg again. 
+
+ - Telnet nodes work again on OpenBSD. Fixed by Jann Fischer.
+
+ - Removed the necessity of a mounted /proc, thus eliminating
+   potential security hazards on OpenBSD.
+
+ - Fixed a few buffer overrun bugs, which could have caused
+   very weird behavior, including (but not limited to) random
+   characters on screen and segmentation faults. 
+
+2.13
+~~~~
+ - Minor fix to ddcfg. Apparently it created all the 
+   configuration files with wrong permissions.
+
+ - Usered and sysop login work now correctly in the built-in
+   frontdoor.
+
+ - Both local and telnet connections work now on both NetBSD
+   and OpenBSD.
+
+ - Fixed ddtelnetd compiling problems on OpenBSD.
+
+2.12
+~~~~
+ - Apparently ddcallers didn't update the list of last callers
+   at all on FreeBSD. Fixed the bug.
+
+ - Fixed a bug in stdio code that made typed characters 
+   appear slowly on local nodes (e.g. 'shell' didn't
+   work correctly).
+
+ - Phillip O'Donnell contributed dosdoor support.
+
+ - The user can change the current message base in the prompt 
+   of 'r' command. Diff sent by Charles Mauch.
+
+ - Fixed the duplicated CR/LF bug in ddtelnetd.
+
+ - Fixed a buffer overflow in the stats screen.
+ 
+ - Ghosts (deleted users) were shown in the userlist.
+
+ - DayDream did not hung up the user's line on daily time limit.
+
+2.11
+~~~~
+ - Fixed a logical bug that caused locked up nodes to ignite
+   a chain reaction. 
+
+ - Fixed a possibly exploitable buffer overflow bug in 
+   strspa(). 
+
+ - Runs on NetBSD and OpenBSD, too.
+
+ - A typo in "configure" prevented ddftpd to be compiled.
+
+ - New users are now allowed to join conference #1 by default.
+
+ - DayDream segfaulted after upload. This buffer overflow bug 
+   has been fixed.
+
+ - Userbase code rewritten in an effort to get it bugless.
+
+ - Door parameter tokens documented.
+ 
+ - The command like tokens for DDDI doors in daydream.cfg are
+   now applicable to stdio programs.
+
+ - The output of quickly terminating stdio programs was not
+   shown correctly.
+
+ - Socket descriptor leak in the doorport fixed.
+
+ - Node messages (login/logout notifications, OLMS) do not cause
+   random jams anymore.
+
+ - Fixed the telnetd segmentation faults.
+
+ - ddsz and ddrz are symlinked properly in the installation.
+
+ - Fixed the disconnection bug in case of wrong system password.
+
+ - Bugs in Unix98 PTY support fixed.
+
+ - The built-in frontdoor starts the board properly.
+
+ - Wrote a small HOWTO-telnet.
+
+ - Userbase handling code rewritten.
+
+ - The temporary directory is now configurable (/tmp/dd by default).
+
+ - Fixed a bug that caused segfaults every time a string containing
+   only carriage returns was printed.
+
+ - The infinite loop in automatic disconnection after upload is fixed.
+
+ - Control-C aborts the disconnection sequence properly.
+
+ - A Y2k bug in the new file scanning fixed.
+
+ - Added support for the syslogd(8) facility.
+
+2.10
+~~~~
+ - Python support is fixed.
+
+ - Y2K problems fixed, read docs/README.y2k.
+
+ - Fixed the totally broken view-command.
+
+ - Cosmetic bugs in ddcallers fixed.
+
+ - ddcallers updates yesterday's statistics correctly.
+
+ - Fixed the "-e" option in ddcallers (exclude SysOp).
+
+ - The changes in user's access to conferences go into effect
+   even if the user is online currently.
+
+ - One couldn't write a message to a user in a conference, into
+   which the user has just been granted access to.
+
+ - Local and SysOp logins from the built-in frontdoor were not
+   provided the default menu bindings. Fixed.
+
+ - This kind of logins also caused immediate segmentation faults.
+
+ - Serial TTY is opened in non-blocking mode first in order to
+   avoid mysterious jams.
+
+ - Fixed a bug that caused only the *.gfx files be shown, not *.txt.
+
+ - Fixed the source code to compile with glibc 2.0.
+
+ - Found a segmentation fault in the menu code.
+
+ - Text files were shown without any pause.
+ 
+ - Implemented the missing "log"-command as a door.
+ 
+ - Coded the "$"-command for testing doors.
+
+ - Fixed installation problems on FreeBSD. 
+
+2.09
+~~~~
+ - "ddfv" is included in the default configuration file.
+
+ - pop_menu-command fixed.
+
+ - Many memory leaks cured.
+
+ - DayDream is now available also in RPM packages.
+
+ - Wrote a small HOWTO-telnet.
+
+ - Unix98 PTY support added (e.g. /dev/pts/*).
+
+ - Doors that failed to bind the socket but continued to run
+   effectively jammed the system. Fixed.
+
+ - Made doorport re-entrant. Doors invoking another doors will
+   not get stuck anymore.
+ 
+ - Brought back the limit of 256 fileareas per conference, since
+   some binary-only doors (e.g. SaturnJoin) did not like the change.
+
+ - Hopefully fixed symlinking stuff during the installation phase.
+
+ - Default menu bindings are provided by DayDream. On other words,
+   it works like the version 2.06 if you do not redefine menus.
+
+2.08
+~~~~
+ - You can build DayDream in any directory and leave the source tree
+   untouched. This is useful for development and/or cross platform
+   compiling purposes.
+
+ - Menu command "command" (executes a menu command, just like if the
+   user had typed it) did not pass its arguments. For example, "j 5"
+   was interpreted as "j".
+
+ - One could not override commands already defined in the same menu
+   context.
+
+ - As the installer does not create necessary paths any longer, ddcfg
+   is modified to create all the directories correctly.
+
+ - Autojoinconf-feature was broken, namely the user joined the last
+   accessible conference during mail/file scan if the conference he or
+   she was joined in before the latest logoff and the autojoin-conference
+   was not accessible.
+
+ - Menu commands "internal" and "door" interpret an empty string as
+   NULL string now. Previously they were interpreted just as a 
+   zero-length string; for example, userlist was broken because of
+   this bug.
+
+ - Menu command "pop_menu" was broken, segfaulting and other issues.
+
+ - Support for FreeBSD is back. It segfaulted a lot at first, but I hope
+   most of these bugs are cured now.
+
+2.07
+~~~~
+ - Somehow managed to break socket stuff in 2.06, olms did not work.
+
+ - Added support for dynamically loadable modules. The code is there, but
+   it is not used by default. Perhaps some day I'll do something with this.
+
+ - Some typos in documentation corrected. 
+
+ - The tilde character (~) in the modem configuration file caused a pause
+   of 50 milliseconds, not half a second as claimed. Fixed.
+
+ - Conferences with no messagebases do not cause problems anymore.
+
+ - `<' command didn't show a list of conferences to join like `>' did.
+
+ - Door-port had a bug; whenever exec() failed (door executable existed but
+   had not exec-bit set), DayDream waited for door to respond forever.
+
+ - The number of file areas per conference is now unlimited (more
+   correctly, currently the maximum is 999 but it's only a matter of
+   pathnames and some aesthetical things).
+
+ - Added `text search' command.
+ 
+ - Implemented a soft-coded menu system, including support for hotkeys
+   and multiple menus.
+
+2.06
+~~~~
+ - telnetd, ddftpd and hydracom now compile on a Linux box without any
+   difficulties (obsolete?).
+
+ - Lack of the string definition file of requsted display mode won't
+   crash DD anymore.
+
+ - The string definition file format is now more liberal. Comments
+   can be added, too.
+   
+ - Deleted users' ghosts don't appear any longer in usered.
+
+ - Usered users can't delete theirselves.
+ 
+ - Main menu prompt now complains about unknown command. It also ignores
+   leftmost whitespaces like the real shells do.
+
+ - PCBoardish repeat kicker added (try holding "enter" in the main menu).
+   
+ - DDDI has now a function to disable output to local/remote side.
+
+ - DayDream comes now with DDFV.
+
+ - A new ftp-daemon has been written. You'll need ProFTPD, which is 
+   located at http://www.proftpd.org/.
+
+ - DD won't get stuck on carrier loss due to door programs not honoring
+   the timeout anymore.
+
+ - Wrote a filelist cleaner in Perl. Check scripts/clean.pl and README.
+
+ - ddrz/ddsz couldn't be compiled with glibc 2.1. Fixed.
+
+2.05
+~~~~
+ - Found a serious security hole in message base. Fixed. 
+
+ - Daydream now hides the password input and asks it twice when chanhing it.
+
+ - flagsingle() was broken. It was totally case-sensitive.
+
+ - Grab produced broken index-files. Fixed. Also Grab takes now commandline
+   parameters (GRAB D works from main menu).
+
+ - Added alarm-routine for doorport startup. If the door refuses to work,
+   DD doesn't die, but exists the door port after 3 seconds of silence.
+
+ - Added python a python module for easier door/add-on/script writing.
+   RTFM for more info.
+
+ - Grab door was SERIOUSLY broken. It didn't close the files (!!) it put
+   to the message packet.
+
+ - Added direct FTP-support.
+ 
+2.04
+~~~~
+ - Made DD able to answer phone calls. (No need for getty anymore).
+ 
+ - Fixed a bug in tosser which caused long messages to be splitted and not
+   imported fully.
+   
+ - Added ability to run multiple doors at once.
+ 
+ - Added view and fake to "new" -door.
+ 
+ - Made DD to inform other nodes when someone logged on.
+ 
+ - Upload doesn't wrap too long lines anymore.
+ 
+ - Added catalog search for duplicate files. DD checks for logfiles if
+   file has been previously uploaded (optional). READ docs/UPDATING NOW!
+   This will work incorrectly if sick things have happened to uploadlog.dat.
+      
+ - Made ddcallers able to handle connections faster than 57600.
+ 
+ - Hopefully fixed a bug in telnetd which caused it to jam sometimes in
+   the beginning of connection.
+   
+ - Fixed a stupid bug which caused doors to exit when DD received socket
+   message.
+   
+ - Some ~# -codes were not working. Fixed.
+ 
+ - Added user configurable option for maximum number of description lines
+   to be shown on filelistings. (Edit user, option 11.)
+
+ - Added "rz" command to main menu, to make automatic zmodem uploading
+   in main menu to work.
+   
+ - Made OLM handling a bit more intellingent.
+ 
+ - Added possibility to change the order of control codes in main prompt.
+   See docs for the control codes.
+   
+ - Added k)eep to read message commands.
+   
+ - Implemented ftp-daemon for DD. Read ddftp/README for more info.
+ 
+ - Implemented background checker. Background checker checks files while user
+   is uploading them, and if they contain file_id.diz, DD puts them online.
+   This one is really neat :)
+
+ - Because of strace bugs and zombie-killing-techniques of DD, strace doesn't
+   work with DD anymore. I hope future versions of strace will work with DD
+   also. This REALLY makes the debugging harder. (Actually i have a patched
+   strace myself and I have whined strace author about the bug).
+   
+ - Added some dd_getintval()'s to libdd. Hello to karnivaalikeksi.
+ 
+ - Fixed a small outlookbug in faker.
+
+ - Fully made DD fts.009 compliant (REPLY-kludge works now :)
+
+ - Zmodem download didn't work properly in carrier loss -situations. Fixed.
+ 
+ - Added "link"-command. It uses the same routines with "move", so don't
+   be scared if DD tells you that "moving" file :). Link copies filelist entry
+   to destination conference and creates a symlink.
+
+ - Added "copy"-command. Works like "link" but instead of linking, it creates
+   a copy.
+
+ - mmap() handling was broken in zmodem. ddsz ate LOTS of memory on big
+   patches. (The bug remains in lsz). I just disabled mmap() and made ddsz
+   to use fread() to read data. That sucks, but works.
+   (My record: ddsz eating *120* megs of memory. NEAT! I won pine :Q) 
+
+ - Fixed a bug in global message read which caused it to loop forever
+   sometimes.
+
+ - Added support for multiple upload paths. Instead of upload path, you can
+   specify list of upload paths. See docs for more info.
+
+ - Fixed a stupid security bug (If new user replaced a deleted user, he got
+   the security level of the deleted user).
+
+ - NEW and DD's internal filelisters show now if the file is flagged.
+
+ - Made DD able to remember flagged files after carrier loss.
+
+ - "<" didn't ask conference password if there was one. 
+   This was one of the MANY bugs dalamar found :)
+   
+ - Made it possible to disable global dupechecking on a conference... 
+
+ - Fixed a stupid bug. New users were not logged correctly. (Caused some
+   bugging in last callers).
+
+ - Playing with tageditor allowed user to leech more than he had time to.
+   Fixed.
+
+ - Made DD able to handle partitions larger than 4GB.
+
+ - Made DD to compile on glibc. 
+
+ - Server didn't remove zombies -> caused Open View to work only at once etc.
+
+ - UserEd had limit of 10 gigs for ul/dl bytes. Removed.
+
+ - Added "msgbaseopt"-utility for maintaining msgbases. It deletes deleted 
+   messages, recycles the messages and fixes message pointers. (LRPs too).
+
+ - Added support for faker to fake flagged files.
+ 
+ - Added some door commands.
+
+ - Some file_id.dizes didn't get imported correctly, because they we're sick.
+   Hello DRINK OR DIE, CR comes before LF in MS-dos, real OS'es don't use
+   CR at all.
+
+ - Default archive corrupt strings were somewhat incorrect. Fixed.
+
+ - N/F/Z and NEW/FR inform user what went from if she was unable to flag
+   a file.
+
+ - Make daydream, doors and utils to compile on -Wall. I hope this will
+   add stability, reduce mem usage etc... At least I found a few bugs
+   while cleaning the source tree up :)
+
+ - Added -s commandline parameter, to make it possible to invoke DD from
+   binkley term or already open connection.
+
+ - When user uploads or downloads file with ZModem, name of the file and
+   current CPS rate are informed in "WHO" command.
+
+ - Made DD to kick user out if he couldn't enter his name on 10 attempts.
+
+ - DD asks now after replying a private message successfully if user wants
+   to delete the original message. This way we can save some HD space (like
+   it would cost something these days).
+
+ - Added "ddftpwho" utility, to view who's currently using ftp.
+
+ - Conftop didn't work correctly if user had uploaded more than 4 gigs. Fixed.
+
+ - DD counted free flagged files incorrectly. Fixed.
+ 
+ - Added some statistic output after upload.
+
+ - Config program is now a bit more intelligent. Order of fields is now longer
+   necessary and you can have comments inside "blocks".
+
+ - Fixed a bug in Movefile which caused it to seg fault when moving files
+   from 8+3 conf to a conf that is using long filenames. If it still seg
+   faults, then it's a libc-bug and should be fixed at least when GLibc
+   becomes the standard.
+
+ - Added a new util to utils/ dir. "logrot" rotates the binary logfiles.
+   It deletes the oldest fieds from the binary logs, and if the log file is
+   corrupted somehow, it fixes it (mostly).
+
+ - Security bit for olm was broken.
+ 
+ - DDTop didn't show new users in weektop. Fixed.
+ 
+2.03
+~~~~
+
+ - Main menu is being looked from conferences display directory too.
+
+ - DayDream showed wrong conferencepw -text file if confpw was activated.
+
+ - Added WHOF-door (shows who transferred a file).
+
+ - N T U works now (hi Agony :)
+
+ - Tosser should act faster now.
+
+ - Added wildcards for Faker.
+
+ - Some doors jammed if carrier was lost. Fixed.
+
+ - DD dumped core if some strings we're too long. (Still dumps, but not that
+   easily :)
+
+ - Server ate too much CPU and X bandwidth. Fixed.
+
+ - Made pcb2ansi-util, to convert @X<blabla> to ansi.
+
+ - Fixed a small bug in fsed (didn't allow to kill the first line)
+
+ - DayDream takes the local screen length from KERNEL, not from config :)
+
+ - There's now daydream mailing list. Send a message to 
+   daydream-request@coyote.eu.org with text "subscribe daydream" in the
+   message body to subscribe list. Messages posted to
+   daydream@coyote.eu.org will be mailed to the subscribers.
+
+ - Made it possible to deny multiple connections, so a user can't be online
+   more than once. 
+
+ - Made it possible to adjust new user defaults. (switches)
+
+ - Changed login a bit. If user record is not found, DD asks if user want to
+   register as a new user. (Configurable)
+
+ - Added UPDATING textfile in dosc/ dir. READ IT!!!!!!!!!
+ 
+ - Multiple SIGHUP's should not kill daydream anymore. (Hi crocodile :)
+
+ - DD doesn't wrap long lines in local messages anymore. Only echos will
+   be wrapped.
+
+ - Added dd_changestatus() to every included door so server and other
+   users are able to see WHAT door user is running :)
+
+ - File listers had a buffer flow sometimes. Fixed.
+
+ - Added command line parameters for DayDream executable. DD recognizes
+   -d (disable idle) and -l (local logon). -l can be used if you like to
+   logon to the board from shell without rlogin or telnet.
+
+
+2.02
+~~~~
+
+ - Added a nice x11-based control panel. NOTE! It requires EZWGL 1.2, which
+   is not released yet :)) Take a look at my webpage (www.vaala.fi/~hydra)
+   for the binary.
+
+ - Fixed a bug with chat reason.
+
+ - Added signal handling for DDSnoop.
+
+ - Made some minor changes with terminal initializations.
+
+ - Added pervert and raped telnetd. It works __ONLY__ in 8-bit mode,
+   and should make zmodem transmissions possible with braindead amigaos
+   telnet clients :)
+
+ - Made dupechecker to do case sensitive search of files.
+
+ - Made smodem and zmodem to skip files that exist in temp dir of other
+   nodes.
+
+ - Added global callerslog -datafile. (logfiles/callerslog.dat).
+
+ - Made DDTop to handle new users better in weektop.
+
+ - Cleaned the source code up. Made it more portable and stuff.. :)
+
+ - Added ctrl-c support for "new"-door.
+
+ - N/F/Z and NEW are able to unflag a file if it's already flagged. 
+   (Flag == toggle)
+
+ - Made FSEd to bug a little less :)
+
+ - Added command line history to the main menu.
+
+ - Made cursor file flagging a bit more incasesensitive.
+
+ - Improved (?) the message quoting system a bit. Also fixed a few bugs
+   in it.
+
+   
+
+2.01
+~~~~
+
+ - Fixed a bug in TypeFile(). Random files were not shown correctly.
+
+ - I managed to totally f*ck up logging facilities of ddsz/ddrz.
+   Fixed :)
+
+ - Outgoing character conversion did NOT work properly. Fixed.
+
+ - Added possibility to replace a string in strings.xxx with a textfile.
+
+ - Replacing menu commands (eg T->L, W->A) didn't work. Fixed.
+
+ - Added fidonet ECHOMAIL support. (Netmail is *NOT* supported yet).
+
+ - Fixed some loss carrier bugs (dd jammed if user dropped carrier in
+   some places).
+
+ - Fixed a bug in conftop, which caused it not to reset weekly stats.
+
+ - Added resume support for zmodem file transfers.
+
+ - Added weekly statistics for ddcallers. Delete old ddcallers.dat, please.
+
+ - Added support for random textfiles, see doc for more info.
+
+
+2.00
+~~~~
+
+      Initial release.

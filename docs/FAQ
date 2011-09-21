@@ -1,0 +1,50 @@
+DayDream FAQ
+------------
+
+Q: I can upload files ok, but downloading doesn't work at all?
+A: [conf]/data/paths.dat is missing. That file is for list of download
+   paths. Add one path per line and it works.
+
+Q: Uploads seem to disappear. What's wrong?
+A: Upload directory has incorrect permissions.
+
+Q: My telnet users complain that zmodem doesn't work. What's wrong?
+A: Unix telnetd is in 7-bit mode as default. Your users need to configure
+   their telnet-clients correctly.
+
+Q: I want to skip that "login: bbs" stuff. How do I do that?
+A: Make a new port for daydream. Use telnetd for that port, but add 
+   -L parameter to run a script that does "exec login bbs".
+
+Q: I can't compile python!
+A: Get python .rpm from ftp.python.org and install it. Then edit 
+   /usr/src/daydream/python/Makefile and make PYTHONDIR and PYTHONMODS
+   point to the right directory.
+
+Q: Why all these 'bin' and 'sbin' directories and symlinks?
+A: As DayDream is to be GNUificated, I am going to comply with the
+   Linux FileSystem Standard. 
+
+Q: Why 'automake'?
+A: Having added 'configure', 'automake' and 'libtool' provide an easy
+   way to deal with libraries and installation process. 
+
+Q: Why 'GNU'?
+A: The GNU General Public License gives persons and groups interested
+   in modding (modification of existing software) relatively free hands.
+   It also helps the central development team and modding groups work
+   together, as the legal details are clear.
+   
+Q: Characters with the highest bit set (i.e. IBMPC ROM font) do not
+   appear correctly on local nodes.
+A: You have toggle the alternate character set on. This is done by
+   outputting the ^[[11m ANSI sequence to the console on most Unix
+   flavors on PC and it is supported by the de-facto standard ANSI.SYS
+   on MSDOS, so you can add this string to banner.[gfx/txt].
+   Please note that your console appears as an ordinary MSDOS "console"
+   and you have to select IBM translation in login screen. Since MSDOS
+   conventions differ a lot from the Unix console, you may want to turn 
+   the ACS off by outputting ^[[10m to the console.
+
+Q: How can I run dosdoors via daydream?
+A: Read docs/HOWTO-dosdoor

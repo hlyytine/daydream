@@ -1,0 +1,67 @@
+DayDream Security FAQ 
+=====================
+
+last update: 31/12/2001
+
+
+This document explains the possible security hazards in DayDream and
+its related utilities. A bulletin board system is especially vulnerable
+to malicious attacks especially from the Internet. However, setting up
+a secure board is not really a complex task. This document discusses
+the techniques of armoring the DayDream system.
+
+
+1. Use a standard user account for BBS
+--------------------------------------
+
+DayDream switches its real and effective UIDs as soon as it is started,
+dropping any root privileges. On versions 2.14.2 and earlier you could
+force it to run as root by setting BBS_UID to root in 'daydream.cfg'.
+However, do not do that. Furthermore, do not run anything else than
+'ddtelnetd' and 'ddftpd' as root.
+
+
+2. Use different accounts for managing and running the system
+-------------------------------------------------------------
+
+An additional user 'bbsadmin' should be created, its group as 'bbs'
+and the same home directory as 'bbs'. Therefore all the administration
+of the board is performed using the 'bbsadmin' account and unnecessary
+permission bits can be turned off. This makes it harder for the user
+'bbs' to modify files and improves overall board security.
+
+
+3. Set up correct permissions and ownerships
+--------------------------------------------
+
+First, persons new to UNIX often wonder how come they can remove the
+root-owned file even if they are not root. This is explained by the
+fact that in UNIX the permission to remove is actually specified in
+the write bit of the parent directory. Thus, if the directory is 
+owned by user 'joe' and has a root-owned file called 'safe', 'joe'
+can delete the file, no matter what the permissions for 'safe' are!
+The solution is to change directory's ownership to something else
+than 'joe' and to remove the write bits for the group and the others
+in the directory. After that 'joe' could not remove the file.
+
+Most of the files installed in /home/bbs are not modified often. It is
+a good idea to change ownerships to 'bbsadmin' and to remove write bits
+of most directories and files. DayDream installs a script 'secure.sh' 
+into bin-subdirectory. This script, once run as 'root', will make those
+changes. It is recommended to read the file before running it. The
+script will write a log file into root's home directory. The system
+operator should check the log for possible errors.
+
+
+4. Use a restricted user to execute third-party binaries
+--------------------------------------------------------
+
+Checking the uploaded archives (zips, for example) is very vulnerable
+to malicious attacks. It was once a favourite cracker technique to use
+a hex editor and change the pathnames in the zipped file to point 
+something in the parent directory. After uploading the modified archive
+to a board, the cracker could overwrite an arbitrary file. Therefore,
+beginning with the version 2.14.3, DayDream requires the archive
+checkers to be run as a user with lesser privileges. 
+
+

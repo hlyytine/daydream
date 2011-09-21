@@ -1,0 +1,58 @@
+This is a simple guide on how to create a telnet-board using DayDream.
+All pathnames are for Red Hat Linux, yours may vary.
+
+ 1) Compile and install DayDream.
+
+ 2) Assign a port for your board by adding the following line to
+    "/etc/services":
+    
+daydream 7000/tcp
+
+    Choose any port that suits your preferences.
+    
+ 3) Make sure you are running "inetd". It should invoke DayDream's
+    telnetd (it is hardwired for 8 bits only, as opposed to standard
+    telnet daemon) and it is accomplished by editing "/etc/inetd.conf".
+    Insert the following line into it:
+    
+daydream stream tcp nowait root /usr/sbin/tcpd /home/bbs/sbin/ddtelnetd \
+-L /home/bbs/.kickstart
+
+    Note that this is a single line and the backslash at the end of the 
+    first line just denotes continuation. Also note that "/usr/sbin/tcpd"
+    is a wrapper from package "tcp_wrappers". If you do not have this 
+    package, use the line below:
+
+daydream stream tcp nowait root /home/bbs/sbin/ddtelnetd ddtelnetd \
+-L /home/bbs/.kickstart
+    
+ 4) Having done that, "ddtelnetd" runs "/home/bbs/.kickstart" as a login
+    program. We will just login as "bbs" there:
+    
+#!/bin/sh
+exec login bbs
+
+    Do not forget to do "chmod u+rx /home/bbs/.kickstart". 
+    
+ 5) Now you will have to invoke DayDream as a part of bbs's login
+    procedure. Furthermore, one needs to logout after exiting 
+    DayDream. This is accomplished by adding the following lines 
+    to "home/bbs/.bash_profile" (this is for bash):
+    
+daydream
+logout
+    
+    Note that you should export LD_LIBRARY_PATH, as described in the
+    basic installation instructions.
+  
+ 6) You may want to get rid of the UNIX password in bbs's login
+    procedure. passwd(1) programs shipped with decent Red Hats have
+    the -d switch.
+    
+passwd -d bbs 
+  
+ 7) Have the "inetd" to reread its configuration file:
+ 
+kill -s SIGHUP `/sbin/pidof inetd`
+
+ 8) Enjoy.

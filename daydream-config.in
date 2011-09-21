@@ -1,0 +1,38 @@
+#!/bin/sh
+
+if [ $# -eq 0 ]; then
+  cat <<EOF
+Usage: daydream-config [OPTIONS]
+Options: 
+        [--libs]
+	[--cflags]
+EOF
+  exit 1
+fi
+
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+
+output=""
+for a in $*; do 
+  case $a in
+    --libs)
+      output="$output -L@libdir@ -ldd"
+      ;;
+    --cflags)
+      output="$output -I@includedir@"
+      ;;
+    *)
+      cat <<EOF
+Usage: daydream-config [OPTIONS]
+Options: 
+        [--libs]
+	[--cflags]
+EOF
+      exit 1
+      ;;      
+  esac
+done
+
+echo $output
+      

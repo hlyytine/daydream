@@ -1,0 +1,24 @@
+README for running DayDream on OpenBSD
+======================================
+
+  Tested on i386 and SPARC platforms.
+
+  Automake uses some GNU make specific constructs, so you have 
+  to install 'gmake' first and substitute 'gmake' for 'make' in
+  the general installation instructions.
+
+  You have to use the '-l' option when starting local nodes.
+
+  Furthermore, you must change some lines in daydream.cfg. 
+    
+LOCALNODEPAT. /dev/tty* 
+
+  must be changed to
+
+LOCALNODEPAT. /dev/ttyC* 
+ 
+  on the i386. For SPARC, use the following line:
+
+LOCALNODEPAT. /dev/console
+
+  On OpenBSD, the appropriate serial ports are called /dev/cuaXX.
